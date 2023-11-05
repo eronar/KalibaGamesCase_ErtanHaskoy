@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 3797364688398960161}
   - component: {fileID: 9149396433905357531}
   - component: {fileID: 3797364688398960162}
-  m_Layer: 0
-  m_Name: GridTestCube2
+  m_Layer: 25
+  m_Name: RoadTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,6 +104,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid_identifier: 
   grid_coordinate: {x: 0, y: 0}
+  index_text: {fileID: 0}
+  tiletransform: {fileID: 0}
+  movement_blockers_layermask:
+    serializedVersion: 2
+    m_Bits: 0
+  tilehighlight_renderer: {fileID: 0}
+  g_cost: 2147483647
+  h_cost: 0
+  f_cost: 0
+  tile_is_empty: 1
+  pathfinding_parent: {fileID: 0}
 --- !u!114 &9149396433905357531
 MonoBehaviour:
   m_ObjectHideFlags: 0

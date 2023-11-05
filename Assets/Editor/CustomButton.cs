@@ -66,18 +66,9 @@ public class customButton : Editor
             myScript.ClearLevel();
         }
 
-        if (GUILayout.Button("Refresh GUI"))
-        {
-            AllowGuiRefresh();
-        }
-
         objectTypes = (ObjectTypes)EditorGUILayout.EnumPopup("Object Type To Spawn:", objectTypes);
         objectColors = (ObjectColors)EditorGUILayout.EnumPopup("Object Color:", objectColors);
         objectRotation = (ObjectRotation)EditorGUILayout.EnumPopup("Object Facing:", objectRotation);
-
-        //if (GUILayout.Button("Create"))
-        //    UseThisTypeOfObject(objectTypes);
-
 
         int gridsize_x = myScript.grid_x;
         int gridsize_y = myScript.grid_y;
@@ -106,45 +97,6 @@ public class customButton : Editor
             GUILayout.BeginVertical();
         }
     }
-
-    public void AllowGuiRefresh()
-    {
-        //Repaint();
-
-        if (refresh_gui == false)
-        {
-            refresh_gui = true;
-        }
-        else if (refresh_gui == true)
-        {
-            refresh_gui = false;
-        }
-
-        Debug.Log(refresh_gui);
-
-    }
-
-    public void CustomGUIFORCE()
-    {
-        DrawDefaultInspector();
-
-        GridCreator myScript = (GridCreator)target;
-        if (GUILayout.Button("Create Level"))
-        {
-            myScript.CreateGrid();
-        }
-
-        if (GUILayout.Button("Clear Level"))
-        {
-            myScript.ClearLevel();
-        }
-
-        if (GUILayout.Button("Refresh GUI"))
-        {
-            AllowGuiRefresh();
-        }
-    }
-
 
     int UseThisTypeOfObject(ObjectTypes objectTypes)
     {

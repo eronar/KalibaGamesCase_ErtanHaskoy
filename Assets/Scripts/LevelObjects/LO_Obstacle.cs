@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LO_Obstacle : MonoBehaviour , IRotatable
+public class LO_Obstacle : MonoBehaviour , ILevelObjects
 {
+    [field: SerializeField] public GridCreator gridCreator { get; set; }
     // Start is called before the first frame update
     void Start()
     {
@@ -16,8 +17,8 @@ public class LO_Obstacle : MonoBehaviour , IRotatable
         
     }
 
-    public void RotateGameObject(int rotation_type)
-    {
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, rotation_type * 90, transform.eulerAngles.z);
-    }
+    //public void RotateGameObject(int rotation_type)
+    //{
+    //    transform.eulerAngles = new Vector3(transform.eulerAngles.x, rotation_type * 90, transform.eulerAngles.z);
+    //}
 }

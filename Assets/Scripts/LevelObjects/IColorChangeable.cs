@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IColorChangeable
 {
-    void ChangeColor(Material new_material);
+    int color_index { get; set; }
+    void ChangeColor(Material new_material , int colorindex);
 }

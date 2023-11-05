@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7722663750208312304}
   - component: {fileID: 7722663750208312307}
   - component: {fileID: 7846640002705894078}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: LO_Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,9 +179,9 @@ BoxCollider:
   m_GameObject: {fileID: 7722663750208312317}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.9, y: 1, z: 0.9}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7846640002705894078
 MonoBehaviour:
