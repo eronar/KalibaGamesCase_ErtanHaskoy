@@ -12,7 +12,7 @@ public interface IDriver
     void DriverAngry();
     void DriverMoving();
     void DriverStopped();
-
+    void EnterAdjacentCar(List<GridTile> tile_list, PlayerInput playerinput, CarDoorHitbox matching_door);
 
 
 }

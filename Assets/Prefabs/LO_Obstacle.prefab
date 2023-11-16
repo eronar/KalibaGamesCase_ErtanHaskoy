@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5585488406044400205}
   - component: {fileID: 8803551602106029544}
   - component: {fileID: 6757801599609413922}
+  - component: {fileID: 55060113933234029}
   m_Layer: 0
   m_Name: TrafficCone
   m_TagString: Untagged
@@ -84,6 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &55060113933234029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5100454877963124983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
 --- !u!1 &7722663750208312317
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8bac3c01d6b9d4488eab4c727ffabcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  object_model: {fileID: 5100454877963124983}
+  <gridCreator>k__BackingField: {fileID: 0}
 --- !u!1 &7910706149462058012
 GameObject:
   m_ObjectHideFlags: 0

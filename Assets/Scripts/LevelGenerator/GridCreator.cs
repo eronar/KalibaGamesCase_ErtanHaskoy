@@ -69,7 +69,7 @@ public class GridCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        CheckIfTilesAreOccupied();
     }
     private void OnEnable()
     {
@@ -414,6 +414,10 @@ public class GridCreator : MonoBehaviour
 
     }
 
+    public void DelayedTileOccupationCheck()
+    {
+        Invoke("CheckIfTilesAreOccupied", 0.05f);
+    }
 
     public void CheckIfTilesAreOccupied()
     {
@@ -454,6 +458,21 @@ public class GridCreator : MonoBehaviour
 
         grid_object_type_list[old_tile_index] = -1;
         grid_object_type_list[new_tile_index] = 2;
+    }
+
+    public void ClearGridTile(GridTile gridtile, GameObject levelobject)
+    {
+        int gridtile_index = gridtile.grid_coordinate.y * grid_x + gridtile.grid_coordinate.x;
+        grid_object_type_prefabs_list[gridtile_index] = null;
+        grid_object_type_list[gridtile_index] = -1;
+
+    }
+
+    public void FillGridTile(GridTile gridtile, GameObject levelobject) //Fill with driver object
+    {
+        int gridtile_index = gridtile.grid_coordinate.y * grid_x + gridtile.grid_coordinate.x;
+        grid_object_type_prefabs_list[gridtile_index] = levelobject;
+        grid_object_type_list[gridtile_index] = 2;
     }
 
     public void DeleteDriverPositionFromLists(GridTile old_gridtile, GameObject driver)

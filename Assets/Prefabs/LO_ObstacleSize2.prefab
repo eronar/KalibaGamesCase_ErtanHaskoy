@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2173120226668235465}
   - component: {fileID: 2992539424451577196}
   - component: {fileID: 1036766389091250598}
+  - component: {fileID: 3882722272912396307}
   m_Layer: 0
   m_Name: Barrier
   m_TagString: Untagged
@@ -84,6 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3882722272912396307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541262386658709619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
 --- !u!1 &2426041919117938238
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,6 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8bac3c01d6b9d4488eab4c727ffabcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  object_model: {fileID: 1541262386658709619}
+  <gridCreator>k__BackingField: {fileID: 0}
 --- !u!1 &2832509983695288799
 GameObject:
   m_ObjectHideFlags: 0

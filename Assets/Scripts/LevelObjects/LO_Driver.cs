@@ -15,10 +15,13 @@ public class LO_Driver : MonoBehaviour, IColorChangeable , IDriver , ILevelObjec
     [SerializeField] private Transform driver_parent_transform;
     [SerializeField] private ParticleSystem happy_particle;
     [SerializeField] private ParticleSystem angry_particle;
+
+    [SerializeField] private GameObject driver_placeholder_parefab;
+    private GameObject active_driver_placeholder;
     [field: SerializeField] public int color_index { get; set; }
     [field: SerializeField] public GridCreator gridCreator { get; set; }
 
-    private List<GridTile> pathtiles;
+    private List<GridTile> pathtiles = new List<GridTile>();
     private float tile_move_timer = 0.15f; //How long does is take to move from one tile to the next one
 
     private PlayerInput playerInput;
@@ -48,6 +51,7 @@ public class LO_Driver : MonoBehaviour, IColorChangeable , IDriver , ILevelObjec
 
     public void SelectDriver()
     {
+        HighlightColor1();
         highlightOutline.enabled = true;
         animator.SetTrigger("Wave");
     }
@@ -60,6 +64,7 @@ public class LO_Driver : MonoBehaviour, IColorChangeable , IDriver , ILevelObjec
 
     public void EnterCar()
     {
+
         //First, face the driver faces the car
         drivertransform.LookAt(car_to_drive.GetDriverSeatPosition().transform.position);
         door_to_enter.DriverArrivedAtDoorLocation();
@@ -80,7 +85,8 @@ public class LO_Driver : MonoBehaviour, IColorChangeable , IDriver , ILevelObjec
             driver_parent_transform.DOScale(0, 1.4f).SetEase(Ease.InSine).OnComplete(() =>
             {
                 GetComponent<BoxCollider>().enabled = false;
-                playerInput.DeleteDriverPositionFromLists();
+                gridCreator.ClearGridTile(pathtiles[pathtiles.Count - 1] , gameObject);
+                gridCreator.CheckIfTilesAreOccupied();
                 car_to_drive.FirstCheckIfCarIsAbleToMove(playerInput);
 
                 Debug.Log("DriverSeated");
@@ -92,6 +98,11 @@ public class LO_Driver : MonoBehaviour, IColorChangeable , IDriver , ILevelObjec
 
     public void MoveToTile(List<GridTile> tile_list, PlayerInput playerinput, CarDoorHitbox matching_door)
     {
+        //Unblock the tile the driver is standing on
+        tile_list[0].tile_is_empty = true;
+        gridCreator.ClearGridTile(tile_list[0], gameObject);
+        GetComponent<BoxCollider>().enabled = false;
+
         if ( matching_door != null) 
         {
             Debug.Log("SAME COLOR DOOR");
@@ -101,9 +112,25 @@ public class LO_Driver : MonoBehaviour, IColorChangeable , IDriver , ILevelObjec
             door_to_enter = matching_door;
             is_entering_left_door = matching_door.GetDoorSide();
             car_to_drive = matching_door.GetParentCar();
+
+
+            //Block the tile the character is going to stand on
+            //Or we can also turn the tile into occupied only after the character stops moving
+            tile_list[tile_list.Count - 1].tile_is_empty = false;
+            gridCreator.FillGridTile(tile_list[tile_list.Count - 1], gameObject);
+
+            if (active_driver_placeholder != null) { Destroy(active_driver_placeholder); }
+            active_driver_placeholder = Instantiate(driver_placeholder_parefab, null);
+            active_driver_placeholder.transform.position = tile_list[tile_list.Count - 1].transform.position;
         }
 
-        pathtiles = tile_list;
+        gridCreator.CheckIfTilesAreOccupied();
+
+        pathtiles.Clear();
+        for (int i = 0; i < tile_list.Count; i = i +1 )
+        {
+            pathtiles.Add(tile_list[i]);
+        }
         playerInput = playerinput;
         highlightOutline.enabled = false;
         DriverMoving();
@@ -156,17 +183,65 @@ public class LO_Driver : MonoBehaviour, IColorChangeable , IDriver , ILevelObjec
                 //Character movement complete, inform the playerinput so that it can return to default selection state
                 if (player_found_matching_car == true)
                 {
+                    if (active_driver_placeholder != null) { Destroy(active_driver_placeholder); }
+                    gridCreator.ClearGridTile(pathtiles[pathtiles.Count - 1], gameObject);
+                    gridCreator.CheckIfTilesAreOccupied();
                     EnterCar();
                     Debug.Log("Driver Getting Into The Car!");
                 }
                 else
                 {
                     DriverStopped();
-                    playerInput.ReEnablePlayerControlsAfterDriverMovement();
+                    //pathtiles[pathtiles.Count - 1].tile_is_empty = false;
+
+                    //playerInput.ReEnablePlayerControlsAfterDriverMovement();  //This is fron the old system where controls are locked until movement is complete
+                    gridCreator.FillGridTile(pathtiles[pathtiles.Count - 1], gameObject);
+                    GetComponent<BoxCollider>().enabled = true;
+                    if (active_driver_placeholder != null) { Destroy(active_driver_placeholder); }
+                    gridCreator.CheckIfTilesAreOccupied();
                     Debug.Log("Movement Complete!");
                 }
             }
         });
+    }
+
+
+
+    public void EnterAdjacentCar(List<GridTile> tile_list, PlayerInput playerinput, CarDoorHitbox matching_door)
+    {
+        player_found_matching_car = true;
+        DriverHappy();
+        matching_door.DriverMovingTowardsCar();
+        door_to_enter = matching_door;
+        is_entering_left_door = matching_door.GetDoorSide();
+        car_to_drive = matching_door.GetParentCar();
+
+        pathtiles.Clear();
+        for (int i = 0; i < tile_list.Count; i = i + 1)
+        {
+            pathtiles.Add(tile_list[i]);
+        }
+
+        EnterCar();
+    }
+
+    public void HighlightColor1()
+    {
+        highlightOutline.color = 0;
+    }
+    public void HighlightColor2()
+    {
+        highlightOutline.color = 1;
+    }
+    public void EnableHighlight()
+    {
+        highlightOutline.enabled = true;
+        Invoke("DisableHighlight", 1);
+    }
+
+    public void DisableHighlight()
+    {
+        highlightOutline.enabled = false;
     }
 
 }

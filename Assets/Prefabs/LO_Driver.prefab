@@ -559,6 +559,7 @@ MonoBehaviour:
   driver_parent_transform: {fileID: 3920026081555574239}
   happy_particle: {fileID: 9117642563294682854}
   angry_particle: {fileID: 8028652382132034720}
+  driver_placeholder_parefab: {fileID: 2587251361701003349, guid: ac34d82e479439d4f9dd9d6a8de3d00c, type: 3}
   <color_index>k__BackingField: 0
   <gridCreator>k__BackingField: {fileID: 0}
 --- !u!1 &3926546857531067663

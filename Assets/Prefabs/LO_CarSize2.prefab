@@ -1078,6 +1078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   car_paintable_parts_parent: {fileID: 5662339111145416302}
+  car_model_parent: {fileID: 5268668502723387282}
   highlightoutline_list:
   - {fileID: 3030807074322304684}
   - {fileID: 1867444858701459363}

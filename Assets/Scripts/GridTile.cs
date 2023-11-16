@@ -20,6 +20,7 @@ public class GridTile : MonoBehaviour
     public int h_cost = 0;
     public int f_cost = 0;
     public bool tile_is_empty = true;
+    public GameObject occupying_car = null;
 
     public GridTile pathfinding_parent;
 
@@ -66,14 +67,24 @@ public class GridTile : MonoBehaviour
     public void CheckIfTileIsOccupied()
     {
         Collider[] hitColliders = Physics.OverlapBox(tiletransform.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, movement_blockers_layermask);
-        if (hitColliders.Length > 0)
+        if (hitColliders.Length > 0)  //Lets check the first element only for now, there shouldn't be overlapping objects normally
         {
-            tile_is_empty = false;
-            //tiletransform.GetChild(0).gameObject.SetActive(false);
+            if (hitColliders[0].GetComponent<IDriveable>() != null)  //Tile is not empty but there is a car, we should check the car color and car door tile accessibility
+            {
+                tile_is_empty = false;
+                occupying_car = hitColliders[0].gameObject;
+            }
+            else  //Tile is not empty and there is not a car there, 
+            {
+                tile_is_empty = false;
+                occupying_car = null;
+                //tiletransform.GetChild(0).gameObject.SetActive(false);
+            }
         }
         else
         {
             tile_is_empty = true;
+            occupying_car = null;
             //tiletransform.GetChild(0).gameObject.SetActive(true);
         }
     }
@@ -96,6 +107,16 @@ public class GridTile : MonoBehaviour
         {
             tilehighlight_renderer.enabled = false;
         })).Play();
+    }
+
+    public GameObject ReturnObjectOnTop()
+    {
+        Collider[] hitColliders = Physics.OverlapBox(tiletransform.position, new Vector3(0.5f, 0.5f, 0.5f), Quaternion.identity, movement_blockers_layermask);
+        if (hitColliders.Length > 0)
+        {
+            return hitColliders[0].gameObject;
+        }
+        return null;
     }
 
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class LO_CarSize3 : MonoBehaviour, IColorChangeable, IRotatable , IDriveable , ILevelObjects
 {
     [SerializeField] private Transform car_paintable_parts_parent;
+    [SerializeField] private Transform car_model_parent;
     [SerializeField] private List<cakeslice.Outline> highlightoutline_list;
     [SerializeField] private CarDoorHitbox car_left_door_hitbox;
     [SerializeField] private CarDoorHitbox car_right_door_hitbox;
@@ -81,6 +82,16 @@ public class LO_CarSize3 : MonoBehaviour, IColorChangeable, IRotatable , IDrivea
 
             }).Play();
         }
+    }
+
+    public void EnableGreenHighlight()
+    {
+        HighlightColor1();
+        for (int i = 0; i < highlightoutline_list.Count; i = i + 1)
+        {
+            highlightoutline_list[i].enabled = true;
+        }
+        Invoke("DisableHighlight", 1);
     }
 
     public void EnableHighlight()
@@ -161,9 +172,12 @@ public class LO_CarSize3 : MonoBehaviour, IColorChangeable, IRotatable , IDrivea
         if (Physics.Raycast(transform.position, -transform.forward, out RaycastHit hit, 100, road_layermask))
         {
             float distance = Vector3.Distance(transform.position, hit.transform.position);
-            transform.DOMove(hit.transform.position, distance * tile_movement_time).SetEase(Ease.Linear).OnComplete(() =>
+            transform.DOMove(transform.position, 0.2f).OnComplete(() => //This is just a delay to make the movement more impactful
             {
-                MoveToExit(hit.collider.GetComponent<RoadTile>().road_side);
+                transform.DOMove(hit.transform.position, distance * tile_movement_time).SetEase(Ease.Linear).OnComplete(() =>
+                {
+                    MoveToExit(hit.collider.GetComponent<RoadTile>().road_side);
+                });
             });
 
         }
@@ -227,7 +241,11 @@ public class LO_CarSize3 : MonoBehaviour, IColorChangeable, IRotatable , IDrivea
 
     public void ActivateExhaustParticleAndRaiseFront()
     {
-        transform.DOLocalRotate(new Vector3(5, transform.localEulerAngles.y, transform.localEulerAngles.z), 0.2f);
+        car_model_parent.transform.DOLocalMoveY(car_model_parent.transform.localPosition.y + 0.1f, 0.2f);
+        car_model_parent.DOLocalRotate(new Vector3(-12, car_model_parent.localEulerAngles.y, car_model_parent.localEulerAngles.z), 0.1f).OnComplete(() =>
+        {
+            car_model_parent.DOLocalRotate(new Vector3(-8, car_model_parent.localEulerAngles.y, car_model_parent.localEulerAngles.z), 0.2f).SetEase(Ease.OutBack);
+        });
         smoke_particle.Play(true);
     }
 
@@ -257,6 +275,40 @@ public class LO_CarSize3 : MonoBehaviour, IColorChangeable, IRotatable , IDrivea
                 playerInput.LockPlayerControls();
             }
         }
+    }
+    public void HighlightColor1()
+    {
+        for (int i = 0; i < highlightoutline_list.Count; i = i + 1)
+        {
+            highlightoutline_list[i].color = 0;
+        }
+    }
+    public void HighlightColor2()
+    {
+        for (int i = 0; i < highlightoutline_list.Count; i = i + 1)
+        {
+            highlightoutline_list[i].color = 1;
+        }
+    }
+
+    public Vector3 GetDoorPosition1()
+    {
+        return car_left_door_hitbox.gameObject.transform.position;
+    }
+
+    public Vector3 GetDoorPosition2()
+    {
+        return car_right_door_hitbox.gameObject.transform.position;
+    }
+
+    public CarDoorHitbox GetDoorHitbox1()
+    {
+        return car_left_door_hitbox;
+    }
+
+    public CarDoorHitbox GetDoorHitbox2()
+    {
+        return car_right_door_hitbox;
     }
 
 

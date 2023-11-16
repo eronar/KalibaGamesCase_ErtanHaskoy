@@ -25,7 +25,7 @@ public class CarDoorHitbox : MonoBehaviour
     public void DriverMovingTowardsCar()
     {
         parent_car = transform.parent.GetComponent<IDriveable>();
-        parent_car.EnableHighlight();
+        parent_car.EnableGreenHighlight();
     }
 
     public void DriverArrivedAtDoorLocation()
